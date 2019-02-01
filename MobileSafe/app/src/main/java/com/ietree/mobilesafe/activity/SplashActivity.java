@@ -28,11 +28,14 @@ public class SplashActivity extends AppCompatActivity {
     private TextView tv_version_name;
     private int mLocalVersionCode;
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
-
+            switch (msg.what) {
+                case UPDATE_VERSION:
+                    break;
+                default:
+                    break;
             }
         }
     };
@@ -88,7 +91,7 @@ public class SplashActivity extends AppCompatActivity {
                         String versionDes = object.getString("versionDes");
                         String downloadUrl = object.getString("downloadUrl");
                         // 对比版本号，当服务器上的版本号>本地版本号，则需要进行更新
-                        if (mLocalVersionCode < Integer.parseInt(versionCode)){
+                        if (mLocalVersionCode < Integer.parseInt(versionCode)) {
                             // 弹窗提示用户是否需要更新版本，消息机制
                             msg.what = UPDATE_VERSION;
                         } else {
@@ -101,7 +104,7 @@ public class SplashActivity extends AppCompatActivity {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
