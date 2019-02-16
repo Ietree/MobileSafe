@@ -1,5 +1,6 @@
 package com.ietree.mobilesafe.activity;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -25,6 +26,11 @@ import java.net.URLConnection;
 public class SplashActivity extends AppCompatActivity {
     private final static String TAG = "SplashActivity";
     private static final int UPDATE_VERSION = 100;
+    // 网络请求失败
+    private static final int INTERNET_REQUEST_ERROR = 101;
+    private static final int IO_ERROR = 102;
+    private static final int JSON_ERROR = 103;
+    private static final int ENTER_HOME_PAGE = 104;
     private TextView tv_version_name;
     private int mLocalVersionCode;
 
@@ -34,11 +40,30 @@ public class SplashActivity extends AppCompatActivity {
             switch (msg.what) {
                 case UPDATE_VERSION:
                     break;
+                case ENTER_HOME_PAGE:
+                    // 不需要更新，直接进入主界面
+                    enterHomePage();
+                    break;
+                case INTERNET_REQUEST_ERROR:
+                    break;
+                case IO_ERROR:
+                    break;
+                case JSON_ERROR:
+                    break;
                 default:
                     break;
             }
         }
     };
+
+    /**
+     * 进入程序主界面
+     */
+    private void enterHomePage() {
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,21 +117,28 @@ public class SplashActivity extends AppCompatActivity {
                         String downloadUrl = object.getString("downloadUrl");
                         // 对比版本号，当服务器上的版本号>本地版本号，则需要进行更新
                         if (mLocalVersionCode < Integer.parseInt(versionCode)) {
+                            Log.i(TAG, "需要更新最新版本...");
                             // 弹窗提示用户是否需要更新版本，消息机制
                             msg.what = UPDATE_VERSION;
                         } else {
-                            // 不需要更新时直接进入程序主页面
+                            // 验证不需要更新，直接进入程序主界面
+                            Log.i(TAG, "当前版本不需要进行更新操作，直接进入程序主界面");
+                            msg.what = ENTER_HOME_PAGE;
                         }
                     } else {
                         Log.i(TAG, "网络请求失败...");
+                        msg.what = INTERNET_REQUEST_ERROR;
                     }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
+                    Log.i(TAG, "io解析异常...");
+                    msg.what = IO_ERROR;
                     e.printStackTrace();
                 } catch (JSONException e) {
+                    Log.i(TAG, "json解析异常...");
+                    msg.what = JSON_ERROR;
                     e.printStackTrace();
                 }
+                mHandler.sendMessage(msg);
             }
         }.start();
     }
