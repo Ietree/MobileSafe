@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:text="欢迎来到手机卫士首页"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        style="@style/TitleStyle"
+        android:text="功能列表" />
+
+    <com.ietree.mobilesafe.view.FocusTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="最新版本已发布，请点击通过应用商店对程序进行升级操作，新版本功能丰富，建议更新"
+        android:textColor="#ed0707" />
+
+    <GridView
+        android:id="@+id/gv_function_list"
+        android:verticalSpacing="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3"/>
+
 </LinearLayout>

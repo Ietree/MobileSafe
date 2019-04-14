@@ -9,12 +9,15 @@ import android.widget.Toast;
 public class ToastUtil {
 
     /**
-     * toast提示
+     * 打印Toast
      *
-     * @param context 上下文环境
-     * @param msg 报错信息
+     * @param ctx 上下文环境
+     * @param msg 打印信息
      */
-    public static void show(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    public static void showToast(Context ctx, String msg) {
+        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
+    }
+
+    private ToastUtil() {
     }
 }
